@@ -3,6 +3,7 @@ package club.sk1er.patcher.tweaker.other;
 import club.sk1er.patcher.asm.external.mods.essential.EssentialModelRendererTransformer;
 import club.sk1er.patcher.asm.external.mods.levelhead.LevelheadAboveHeadRenderTransformer;
 import club.sk1er.patcher.asm.external.mods.optifine.*;
+import club.sk1er.patcher.asm.external.mods.optifine.reflectionoptimizations.automatic.ReflectionOptimizer;
 import club.sk1er.patcher.asm.external.mods.optifine.reflectionoptimizations.common.BakedQuadReflectionOptimizer;
 import club.sk1er.patcher.asm.external.mods.optifine.reflectionoptimizations.common.EntityRendererReflectionOptimizer;
 import club.sk1er.patcher.asm.external.mods.optifine.reflectionoptimizations.common.ExtendedBlockStorageReflectionOptimizer;
@@ -23,6 +24,7 @@ import club.sk1er.patcher.asm.external.mods.ve.BetterChatTransformer;
 import club.sk1er.patcher.asm.external.optifine.WorldVertexBufferUploaderTransformer;
 import club.sk1er.patcher.asm.render.screen.InventoryEffectRendererTransformer;
 import club.sk1er.patcher.optifine.OptiFineGenerations;
+import club.sk1er.patcher.optifine.OptiFineReflectorScraper;
 import club.sk1er.patcher.tweaker.ClassTransformer;
 import club.sk1er.patcher.tweaker.transform.PatcherTransformer;
 import com.google.common.collect.ArrayListMultimap;
@@ -103,15 +105,17 @@ public class ModClassTransformer implements IClassTransformer {
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
+        OptiFineReflectorScraper.scanClassBytesForReflector(bytes, transformedName);
         return ClassTransformer.createTransformer(transformedName, bytes, transformerMap, logger);
     }
 
     private void registerCommonTransformers() {
-        registerTransformer(new BakedQuadReflectionOptimizer());
-        registerTransformer(new FaceBakeryReflectionOptimizer());
-        registerTransformer(new ModelRotationReflectionOptimizer());
-        registerTransformer(new ExtendedBlockStorageReflectionOptimizer());
-        registerTransformer(new EntityRendererReflectionOptimizer());
+        registerTransformer(new ReflectionOptimizer());
+//        registerTransformer(new BakedQuadReflectionOptimizer());
+//        registerTransformer(new FaceBakeryReflectionOptimizer());
+//        registerTransformer(new ModelRotationReflectionOptimizer());
+//        registerTransformer(new ExtendedBlockStorageReflectionOptimizer());
+//        registerTransformer(new EntityRendererReflectionOptimizer());
 
         registerTransformer(new LagometerTransformer());
         registerTransformer(new GuiIngameForgeTransformer());
@@ -127,9 +131,9 @@ public class ModClassTransformer implements IClassTransformer {
     }
 
     private void registerLSeriesTransformers() {
-        registerTransformer(new ItemModelMesherReflectionOptimizer());
-        registerTransformer(new CustomColorsReflectionOptimizer());
-        registerTransformer(new RenderChunkReflectionOptimizer());
+//        registerTransformer(new ItemModelMesherReflectionOptimizer());
+//        registerTransformer(new CustomColorsReflectionOptimizer());
+//        registerTransformer(new RenderChunkReflectionOptimizer());
         registerTransformer(new GuiDetailSettingsOFTransformer());
     }
 
